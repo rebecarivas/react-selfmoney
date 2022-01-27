@@ -1,11 +1,13 @@
-import {GlobalStyle} from './styles/global';
+import {GlobalStyle} from '../src/styles/global';
 import Header from './components/Header';
+import Dashboard from './components/Dashboard';
 
 const App: React.FC = () => {
   return (
     <>
       <Header />
-      <GlobalStyle/>
+      <Dashboard />
+      <GlobalStyle />
     </>
   );
 }
