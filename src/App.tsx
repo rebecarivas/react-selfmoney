@@ -1,32 +1,27 @@
-import {GlobalStyle} from '../src/styles/global';
+import { useState } from 'react';
 import Header from './components/Header';
 import Dashboard from './components/Dashboard';
-import { createServer} from 'miragejs';
+import TransactionModal from './components/TransactionModal';
+import Modal from 'react-modal';
+import {GlobalStyle} from '../src/styles/global';
 
-createServer({
-  routes(){
-    this.namespace = 'api'
-    this.get('/transaction', () => {
-      return[
-        {
-          id: 1,
-          title: 'Transaction 1',
-          amoutn: 400,
-          type: 'deposit',
-          category: 'food',
-          date: new Date()
-        }
-      ]
-    } )
-  }
-})
+Modal.setAppElement('#root');
 
 const App: React.FC = () => {
+  const [isOpenModal, setIsOpenModal] = useState(false)
+
+  const handleOpenModal = () => {
+    setIsOpenModal(true)
+  }
+  const handleCloseModal = () => {
+    setIsOpenModal(false)
+  }
   return (
     <>
-      <Header />
-      <Dashboard />
       <GlobalStyle />
+      <Header handleOpenModal={handleOpenModal}/>
+      <Dashboard />
+      <TransactionModal isOpenModal={isOpenModal} handleCloseModal={handleCloseModal}/>
     </>
   );
 }
