@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import {transparentize} from 'polished';
 
 export const Container = styled.form`
     h2{
@@ -22,6 +23,7 @@ export const Container = styled.form`
         & + input{
             margin-top: 1rem;
         }
+    }
         button[type="submit"]{
             width: 100%;
             padding: 0 1.25rem;
@@ -38,20 +40,33 @@ export const Container = styled.form`
             &:hover{
                 filter: brightness(0.9)
             }
-    }
-}
-`
+        }
+`;
+
 export const TransactionContainer = styled.div`
     margin: 1rem 0;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.5rem;
-    
-    button{
+`;
+
+interface IRadioBox{
+    isActive: boolean;
+    activeColor: 'green' | 'red';
+}
+
+const colors = {
+    green: '#33CC95',
+    red: '#E52E4D'
+}
+
+export const RadioBox = styled.button<IRadioBox>`
         height:4rem;
         border: 1px solid #d7d7d7;
         border-radius:0.25rem;
-        background-color: transparent;
+
+        background-color: ${(props) => props.isActive ? transparentize( 0.9, colors[props.activeColor]) : 'transparent' };
+        
         display: flex;
         align-items: center;
         justify-content: center;
@@ -60,7 +75,6 @@ export const TransactionContainer = styled.div`
         &:hover{
             border-color: #aaa;
         }
-    }
     img{
         width: 20px;
         height:20px;

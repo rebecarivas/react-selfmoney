@@ -1,8 +1,9 @@
 import Modal from 'react-modal';
-import {Container, TransactionContainer} from './style';
+import {Container, TransactionContainer, RadioBox} from './style';
 import Close from '../../assets/close.svg';
 import Income from '../../assets/income.svg';
 import Outcome from '../../assets/outcome.svg';
+import { useState } from 'react';
 
 interface ITransactionModal{
     isOpenModal: boolean;
@@ -10,6 +11,7 @@ interface ITransactionModal{
 }
 
 const TransactionModal = ({isOpenModal, handleCloseModal}: ITransactionModal) => {
+    const [transactionType, setTransactionType] = useState('deposit')
     return(
         <Modal
         isOpen={isOpenModal}
@@ -28,14 +30,24 @@ const TransactionModal = ({isOpenModal, handleCloseModal}: ITransactionModal) =>
                 <input placeholder='Título'/>
                 <input type='number' placeholder='Valor' />
                 <TransactionContainer>
-                    <button type="button">
+                    <RadioBox 
+                        type="button" 
+                        onClick={() => setTransactionType('deposit')}
+                        isActive={transactionType === 'deposit'}
+                        activeColor="green"
+                    >
                         <img src={Income} alt= "entradas"/>
                         <span>Entrada</span>
-                    </button>
-                    <button type="button">
+                    </RadioBox>
+                    <RadioBox 
+                        type="button" 
+                        onClick={() => setTransactionType('withdraw')}
+                        isActive={transactionType === 'withdraw'}
+                        activeColor="red"
+                    >
                         <img src={Outcome} alt="saídas"/>
                         <span>Saída</span>
-                    </button>
+                    </RadioBox>
                 </TransactionContainer>
                 <input placeholder='Categoria' />
                 <button type='submit'>Cadastrar</button>
