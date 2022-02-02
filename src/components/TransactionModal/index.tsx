@@ -4,6 +4,7 @@ import Close from '../../assets/close.svg';
 import Income from '../../assets/income.svg';
 import Outcome from '../../assets/outcome.svg';
 import { FormEvent, useState } from 'react';
+import api from '../../services/api';
 
 interface ITransactionModal{
     isOpenModal: boolean;
@@ -18,7 +19,13 @@ const TransactionModal = ({isOpenModal, handleCloseModal}: ITransactionModal) =>
 
     const handleCreateTransaction = (event: FormEvent) => {
         event.preventDefault()
-        console.log({title, value, category})
+        const data ={
+            title, 
+            value, 
+            category,
+            transactionType,
+        }
+        api.post('transaction', data)
     }
     return(
         <Modal
