@@ -3,7 +3,7 @@ import {Container, TransactionContainer, RadioBox} from './style';
 import Close from '../../assets/close.svg';
 import Income from '../../assets/income.svg';
 import Outcome from '../../assets/outcome.svg';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 
 interface ITransactionModal{
     isOpenModal: boolean;
@@ -11,7 +11,15 @@ interface ITransactionModal{
 }
 
 const TransactionModal = ({isOpenModal, handleCloseModal}: ITransactionModal) => {
-    const [transactionType, setTransactionType] = useState('deposit')
+    const [transactionType, setTransactionType] = useState('deposit');
+    const [title, setTitle] = useState('');
+    const [value, setValue] = useState(0);
+    const [category, setCategory] = useState('');
+
+    const handleCreateTransaction = (event: FormEvent) => {
+        event.preventDefault()
+        console.log({title, value, category})
+    }
     return(
         <Modal
         isOpen={isOpenModal}
@@ -25,10 +33,19 @@ const TransactionModal = ({isOpenModal, handleCloseModal}: ITransactionModal) =>
               className="react-modal-close">
                   <img src={Close} alt="fechar modal"/>
             </button>
-            <Container>
+            <Container onSubmit={handleCreateTransaction}>
                 <h2>Cadastrar Nova Transação</h2>
-                <input placeholder='Título'/>
-                <input type='number' placeholder='Valor' />
+                <input 
+                    placeholder='Título'
+                    value= {title}
+                    onChange={(event) => setTitle(event.target.value)}
+                />
+                <input 
+                    type='number' 
+                    placeholder='Valor' 
+                    value={value}
+                    onChange={(event) => setValue(+event.target.value) }
+                />
                 <TransactionContainer>
                     <RadioBox 
                         type="button" 
@@ -49,7 +66,11 @@ const TransactionModal = ({isOpenModal, handleCloseModal}: ITransactionModal) =>
                         <span>Saída</span>
                     </RadioBox>
                 </TransactionContainer>
-                <input placeholder='Categoria' />
+                <input 
+                    placeholder='Categoria' 
+                    value={category}
+                    onChange={event => setCategory(event.target.value)}
+                />
                 <button type='submit'>Cadastrar</button>
             </Container>
       </Modal>
