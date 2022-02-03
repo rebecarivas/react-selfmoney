@@ -1,10 +1,10 @@
+import { FormEvent, useState } from 'react';
 import Modal from 'react-modal';
+import { useTransactions } from '../../hooks/useTransaction';
 import {Container, TransactionContainer, RadioBox} from './style';
 import Close from '../../assets/close.svg';
 import Income from '../../assets/income.svg';
 import Outcome from '../../assets/outcome.svg';
-import { FormEvent, useState } from 'react';
-import api from '../../services/api';
 
 interface ITransactionModal{
     isOpenModal: boolean;
@@ -12,20 +12,27 @@ interface ITransactionModal{
 }
 
 const TransactionModal = ({isOpenModal, handleCloseModal}: ITransactionModal) => {
+    const {createTransaction} = useTransactions();
+    
     const [transactionType, setTransactionType] = useState('deposit');
     const [title, setTitle] = useState('');
-    const [value, setValue] = useState(0);
+    const [amount, setAmount] = useState(0);
     const [category, setCategory] = useState('');
 
-    const handleCreateTransaction = (event: FormEvent) => {
+    async function handleCreateTransaction (event: FormEvent) {
         event.preventDefault()
-        const data ={
+        await createTransaction({
             title, 
-            value, 
+            amount,
             category,
             transactionType,
-        }
-        api.post('transaction', data)
+        })
+        setTitle('')
+        setAmount(0)
+        setCategory('')
+        setTransactionType('deposit')
+        handleCloseModal()
+
     }
     return(
         <Modal
@@ -50,8 +57,8 @@ const TransactionModal = ({isOpenModal, handleCloseModal}: ITransactionModal) =>
                 <input 
                     type='number' 
                     placeholder='Valor' 
-                    value={value}
-                    onChange={(event) => setValue(+event.target.value) }
+                    value={amount}
+                    onChange={(event) => setAmount(+event.target.value) }
                 />
                 <TransactionContainer>
                     <RadioBox 

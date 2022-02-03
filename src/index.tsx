@@ -8,6 +8,22 @@ createServer({
     transaction: Model,
   },
 
+  seeds(server){
+    server.db.loadData({
+      transactions: [
+        {
+          id: 1,
+          title: 'Desenvolvimento de website',
+          type: 'deposit',
+          category: 'Desenvolviemnto',
+          amount: 1200,
+          createAt: new Date ('2022-01-12 09:00:00')
+        },
+      ]
+    })
+
+  },
+
   routes(){
     this.namespace = 'api'
     this.get('transaction', () => {
